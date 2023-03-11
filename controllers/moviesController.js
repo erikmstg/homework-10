@@ -15,8 +15,7 @@ class MoviesController {
       const { id } = req.params;
 
       const data = await MoviesService.getMovieById(id, next);
-
-      if (!data) {
+      if (!data.data) {
         next({ status: 404, message: "Data not found" });
       } else {
         res.status(200).json(data);

@@ -15,7 +15,6 @@ class UsersController {
       const { id } = req.params;
 
       const data = await UsersService.getUserById(id, next);
-      console.log(data, "<<< data conto");
       res.status(200).json(data);
     } catch (error) {
       next(error);

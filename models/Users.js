@@ -16,9 +16,8 @@ class Users {
       const findById = `SELECT * FROM users WHERE id=$1;`;
 
       const data = await pool.query(findById, [id]);
-      return data.rows[0];
+
       if (data.rows.length === 0) {
-        console.log("000000");
         next({ status: 404, message: "Data not found" });
       } else {
         return { data: data.rows[0] };
@@ -31,8 +30,8 @@ class Users {
   static createUser = async (body, next) => {
     try {
       const { id, email, gender, password, role } = body;
-      const insertQuery = `INSERT INTO users
-                                VALUES(id, email, gender, password, role)
+      const insertQuery = `INSERT INTO users(id, email, gender, password, role)
+                                VALUES($1, $2, $3, $4, $5)
                                 RETURNING *;
         `;
 
@@ -61,7 +60,13 @@ class Users {
                                 RETURNING *;
         `;
 
-      const data = pool.query(updateQuery, [email, gender, password, role, id]);
+      const data = await pool.query(updateQuery, [
+        email,
+        gender,
+        password,
+        role,
+        id,
+      ]);
       return data.rows[0];
     } catch (error) {
       next(error);

@@ -17,12 +17,7 @@ class Movies {
       const findById = `SELECT * FROM movies WHERE id=$1;`;
 
       const data = await pool.query(findById, [id]);
-
-      if (data.rows.length === 0) {
-        next({ status: 404, message: "Data not found" });
-      } else {
-        return { data: data.rows[0] };
-      }
+      return { data: data.rows[0] };
     } catch (error) {
       next(error);
     }
